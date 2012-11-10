@@ -7,6 +7,12 @@
 #include "webparse.h"
 #include "menue.h"
 
+/**
+ * @brief WebParse::WebParse WebParse Constructor
+ * @param location Choosen location: Stadtmitte, Lichtwiese,
+ *  Schöfferstraße, Haardtring or Dieburg
+ * @param parent parent
+ */
 WebParse::WebParse(QString location, QObject *parent) :
     QObject(parent)
 {
@@ -15,6 +21,11 @@ WebParse::WebParse(QString location, QObject *parent) :
     m_qnam = new QNetworkAccessManager(this);
 }
 
+/**
+ * @brief WebParse::download Starts download of mensa-<location>.html
+ *  and waits for it to finish
+ * @return parsed results as List of Menues
+ */
 QList<Menue> WebParse::download()
 {
     QUrl url("http://www.studentenwerkdarmstadt.de/essen/mensa-stadtmitte.html");
@@ -33,7 +44,6 @@ QList<Menue> WebParse::download()
 
 /**
  * @brief Called when the result was downloaded
- *        Emits "getDone" if there are no more pages in the result set
  * @see WebParse::parsePage
  */
 void WebParse::replyFinished()
@@ -59,18 +69,22 @@ void WebParse::replyFinished()
 QList<Menue> WebParse::parsePage(QString html)
 {
     QList<Menue> results;
+    Menue result;
+    int pos = 0;
 
-    QRegExp rx("<tr><th></th><th class=\"hl_today\">([\\w,\\s\\.\\d]+)</th></tr>");
+    QRegExp rx("<tr><th></th><th class=\"hl_today\">([\\w,\\s\\." \
+               "\\d]+)</th></tr>");
     if (rx.indexIn(html) != -1)
         m_today = rx.cap(1);
 
-    int pos = 0;
-    rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)</td><td valign=\"top\"><img class=\"spk_img\" src=\"components/com_spk/images/[\\w]*pict_k.jpg\" alt=\"([\\w]*)\" width=\"50px\" />([\\w&;\\s!\\-\\(\\d\\,\\)]*) [\\w]{1} ([\\d\\,]{4})");
+    rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)</td><td " \
+                  "valign=\"top\"><img class=\"spk_img\" src=\"comp" \
+                  "onents/com_spk/images/[\\w]*pict_k.jpg\" alt=\"" \
+                  "([\\w]*)\" width=\"50px\" />([\\w&;\\s!\\-\\(" \
+                  "\\d\\,\\)]*) [\\w]{1} ([\\d\\,]{4})");
     rx.setMinimal(true);
 
     while ((pos = rx.indexIn(html, pos)) != -1) {
-        Menue result;
-
         result.setLocation(rx.cap(1).replace("&nbsp;", ""));
         result.setType(rx.cap(2));
         result.setName(replaceHtml(rx.cap(3)));
@@ -80,27 +94,25 @@ QList<Menue> WebParse::parsePage(QString html)
         pos += rx.matchedLength();
     }
 
-    rx.setPattern("<br />&nbsp;<br /><table border=\"1\" class=\"spk_table\"><tr><th></th><th class=\"hl_today\">([\\d\\.\\s\\w,]*)</th></tr>");
+    rx.setPattern("<br />&nbsp;<br /><table border=\"1\" class=" \
+                  "\"spk_table\"><tr><th></th><th class=\"hl_" \
+                  "today\">([\\d\\.\\s\\w,]*)</th></tr>");
     if (rx.indexIn(html) != -1)
         m_day = rx.cap(1);
 
     return results;
 }
 
+/**
+ * @brief WebParse::replaceHtml replaces html codes for
+ *  german umlauts and quotation marks
+ * @param in QString to look for umlauts in
+ * @return QString, clean of html
+ */
 QString WebParse::replaceHtml(QString in)
 {
     return in.replace("&uuml;", "ü").replace("&quot;", "\"")
             .replace("&auml;", "ä").replace("&ouml;", "ö");
-}
-
-QString WebParse::breakName(QString in, int lineLen)
-{
-    for (int i = 0; i < 10; i++) {
-        if (in.length() > lineLen * i) {
-            in.insert(lineLen * i, "\n");
-        }
-    }
-    return in;
 }
 
 /**
@@ -112,6 +124,10 @@ QNetworkAccessManager *WebParse::qnam()
     return m_qnam;
 }
 
+/**
+ * @brief WebParse::getDay returns m_day, parsed from html
+ * @return m_day
+ */
 QString WebParse::getDay() const
 {
     return m_day;
