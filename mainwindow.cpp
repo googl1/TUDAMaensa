@@ -28,8 +28,8 @@ MainWindow::~MainWindow()
 }
 
 /**
- * @brief MainWindow::setDay
- * @param day
+ * @brief MainWindow::setDay sets the label label_day
+ * @param day QString to set in label_day
  */
 void MainWindow::setDay(QString day)
 {
@@ -37,7 +37,8 @@ void MainWindow::setDay(QString day)
 }
 
 /**
- * @brief MainWindow::work
+ * @brief MainWindow::work starts parsing
+ *  and displaying data process
  */
 void MainWindow::work()
 {
@@ -46,8 +47,8 @@ void MainWindow::work()
 }
 
 /**
- * @brief MainWindow::setList
- * @param list
+ * @brief MainWindow::setList displays the results
+ * @param list results as list of menues
  */
 void MainWindow::setList(QList<Menue> list)
 {
