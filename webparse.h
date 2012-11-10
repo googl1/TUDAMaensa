@@ -6,7 +6,10 @@
 
 #include "menue.h"
 
-
+/**
+ * @brief The WebParse class is a web parser for
+ * http://www.studentenwerkdarmstadt.de/essen/mensa-<location>.html
+ */
 class WebParse : public QObject
 {
     Q_OBJECT

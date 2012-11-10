@@ -10,6 +10,9 @@ namespace Ui {
     class MainWindow;
 }
 
+/**
+ * @brief The MainWindow class is the main window of TUDAMaensa
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

@@ -3,6 +3,10 @@
 
 #include <QString>
 
+/**
+ * @brief The Menue class represents one menu.
+ *  It contains it name, price, type and location as QStrings.
+ */
 class Menue //: public QObject
 {
    // Q_OBJECT
