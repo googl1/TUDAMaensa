@@ -7,6 +7,10 @@
 #include <QFile>
 #include <QDateTime>
 
+/**
+ * @brief MainWindow::MainWindow
+ * @param parent
+ */
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -15,43 +19,66 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowTitle("TUDAMaensa");
 }
 
+/**
+ * @brief MainWindow::~MainWindow
+ */
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
+/**
+ * @brief MainWindow::setDay
+ * @param day
+ */
 void MainWindow::setDay(QString day)
 {
     ui->label_day->setText(day);
 }
 
+/**
+ * @brief MainWindow::work
+ */
 void MainWindow::work()
 {
     parser = new WebParse("Stadtmitte");
     setList(parser->download());
 }
 
+/**
+ * @brief MainWindow::setList
+ * @param list
+ */
 void MainWindow::setList(QList<Menue> list)
 {
     QDateTime *date = new QDateTime();
+    QTableWidgetItem *name;
+    QTableWidgetItem *location;
+    QTableWidgetItem *price;
+    QTableWidgetItem *type;
+    QString typePic;
+
     if (!parser->getDay().isEmpty())
          ui->label_day->setText(parser->getDay());
     else if(date->date().dayOfWeek() < 3)
-        ui->label_day->setText("It's weekend, no crappy cafeteria food!");
+        ui->label_day->setText("It's weekend, no " \
+                               "crappy cafeteria food!");
 
     ui->tableWidget->setRowCount(list.length());
 
     for (int i = 0; i < list.length(); i++) {
-        QTableWidgetItem *name = new QTableWidgetItem();
-        QTableWidgetItem *location = new QTableWidgetItem();
-        QTableWidgetItem *price = new QTableWidgetItem();
-        QTableWidgetItem *type = new QTableWidgetItem();
+        name = new QTableWidgetItem();
+        location = new QTableWidgetItem();
+        price = new QTableWidgetItem();
+        type = new QTableWidgetItem();
 
-        QString typeName(list.at(i).getType());
-        if (!QFile::exists(QString(":/img/%1pict_k.png").arg(typeName)))
-            qDebug() << QString("Image :/img/%1pict_k.png not found.").arg(typeName);
+        typePic = QString(":/img/%1pict_k.png")
+                .arg(list.at(i).getType());
+        if (!QFile::exists(typePic))
+            qDebug() << QString("Image %1 not found.")
+                        .arg(typePic);
         else
-            type->setIcon(QIcon(QPixmap(QString(":/img/%1pict_k.png").arg(typeName))));
+            type->setIcon(QIcon(QPixmap(typePic)));
 
         name->setText(list.at(i).getName());
         location->setText(list.at(i).getLocation());
