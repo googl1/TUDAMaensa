@@ -5,6 +5,7 @@
 #include <QTextCodec>
 #include <QDebug>
 #include <QFile>
+#include <QDateTime>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -32,7 +33,12 @@ void MainWindow::work()
 
 void MainWindow::setList(QList<Menue> list)
 {
-    ui->label_day->setText(parser->getDay());
+    QDateTime *date = new QDateTime();
+    if (!parser->getDay().isEmpty())
+         ui->label_day->setText(parser->getDay());
+    else if(date->date().dayOfWeek() < 3)
+        ui->label_day->setText("It's weekend, no crappy cafeteria food!");
+
     ui->tableWidget->setRowCount(list.length());
 
     for (int i = 0; i < list.length(); i++) {
@@ -50,7 +56,6 @@ void MainWindow::setList(QList<Menue> list)
         name->setText(list.at(i).getName());
         location->setText(list.at(i).getLocation());
         price->setText(list.at(i).getPrice());
-        //type->setText(list.at(i).getType());
 
         ui->tableWidget->setItem(i, 1, name);
         ui->tableWidget->setItem(i, 2, location);

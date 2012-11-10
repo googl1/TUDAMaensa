@@ -81,8 +81,8 @@ QList<Menue> WebParse::parsePage(QString html)
     }
 
     rx.setPattern("<br />&nbsp;<br /><table border=\"1\" class=\"spk_table\"><tr><th></th><th class=\"hl_today\">([\\d\\.\\s\\w,]*)</th></tr>");
-    int i = rx.indexIn(html);
-    m_day = rx.cap(1);
+    if (rx.indexIn(html) != -1)
+        m_day = rx.cap(1);
 
     return results;
 }
