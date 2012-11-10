@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/fischpict_k.png</file>
+        <file>img/fleischlospict_k.png</file>
+        <file>img/gefluegelpict_k.png</file>
+        <file>img/lammpict_k.png</file>
+        <file>img/rindpict_k.png</file>
+        <file>img/rindschweinpict_k.png</file>
+        <file>img/schweinpict_k.png</file>
+        <file>img/wildpict_k.png</file>
+    </qresource>
+</RCC>
