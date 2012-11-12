@@ -19,9 +19,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("TUDAMaensa");
 
+    m_veggie = false;
     checkVeggie = new QAction(tr("No meat please"), this);
     checkVeggie->setCheckable(true);
-    connect(checkVeggie, SIGNAL(triggered(bool)), this, SLOT(redrawTable()));
+    checkVeggie->setChecked(false);
+    connect(checkVeggie, SIGNAL(triggered(bool)), this, SLOT(veggieTriggered(bool)));
     menuBar()->addAction(checkVeggie);
 }
 
@@ -64,6 +66,7 @@ void MainWindow::setList(QList<Menue> list)
     QTableWidgetItem *price;
     QTableWidgetItem *type;
     QString typePic;
+    int v = 0;
 
     if (!parser->getDay().isEmpty())
          ui->label_day->setText(parser->getDay());
@@ -75,10 +78,11 @@ void MainWindow::setList(QList<Menue> list)
 
     for (int i = 0; i < list.length(); i++) {
 
-//        if (m_veggie && !list.at(i).isVeggie()) {
-//            i--;
-//            continue;
-//        }
+        if (m_veggie && !list.at(i).isVeggie()) {
+            v++;
+            ui->tableWidget->setRowCount(list.length() - v);
+            continue;
+        }
 
         name = new QTableWidgetItem();
         location = new QTableWidgetItem();
@@ -97,10 +101,10 @@ void MainWindow::setList(QList<Menue> list)
         location->setText(list.at(i).getLocation());
         price->setText(list.at(i).getPrice());
 
-        ui->tableWidget->setItem(i, 1, name);
-        ui->tableWidget->setItem(i, 2, location);
-        ui->tableWidget->setItem(i, 3, price);
-        ui->tableWidget->setItem(i, 0, type);
+        ui->tableWidget->setItem(i - v, 1, name);
+        ui->tableWidget->setItem(i - v, 2, location);
+        ui->tableWidget->setItem(i - v, 3, price);
+        ui->tableWidget->setItem(i - v, 0, type);
     }
 
     ui->tableWidget->resizeColumnsToContents();
@@ -109,11 +113,17 @@ void MainWindow::setList(QList<Menue> list)
     //test
     //old column-width for column 1: 500
     int a = ui->tableWidget->columnWidth(0) + ui->tableWidget->columnWidth(2) + ui->tableWidget->columnWidth(3);
-    ui->tableWidget->setColumnWidth(1, ui->tableWidget->width() - a);
+    ui->tableWidget->setColumnWidth(1, ui->tableWidget->width() - a - 40);
 }
 
 void MainWindow::redrawTable()
 {
     ui->tableWidget->clearContents();
     setList(parser->download());
+}
+
+void MainWindow::veggieTriggered(bool veg)
+{
+    m_veggie = veg;
+    redrawTable();
 }

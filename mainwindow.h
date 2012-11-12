@@ -26,6 +26,7 @@ public:
 private slots:
     void setList(QList<Menue> list);
     void redrawTable();
+    void veggieTriggered(bool veg);
 
 private:
     Ui::MainWindow *ui;
