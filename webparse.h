@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QtNetwork/QNetworkReply>
+#include <QDate>
 
 #include "menue.h"
 
@@ -29,6 +30,7 @@ private:
     QString breakName(QString in, int lineLen);
     QString replaceHtml(QString in);
     QString m_day;
+    QDate m_downloadDate;
 
 private slots:
     void replyFinished();

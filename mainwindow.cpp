@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QDateTime>
+#include <QMenuBar>
 
 /**
  * @brief MainWindow::MainWindow
@@ -17,6 +18,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("TUDAMaensa");
+
+    checkVeggie = new QAction(tr("No meat please"), this);
+    checkVeggie->setCheckable(true);
+    connect(checkVeggie, SIGNAL(triggered(bool)), this, SLOT(redrawTable()));
+    menuBar()->addAction(checkVeggie);
 }
 
 /**
@@ -68,6 +74,12 @@ void MainWindow::setList(QList<Menue> list)
     ui->tableWidget->setRowCount(list.length());
 
     for (int i = 0; i < list.length(); i++) {
+
+//        if (m_veggie && !list.at(i).isVeggie()) {
+//            i--;
+//            continue;
+//        }
+
         name = new QTableWidgetItem();
         location = new QTableWidgetItem();
         price = new QTableWidgetItem();
@@ -93,5 +105,15 @@ void MainWindow::setList(QList<Menue> list)
 
     ui->tableWidget->resizeColumnsToContents();
     ui->tableWidget->resizeRowsToContents();
-    ui->tableWidget->setColumnWidth(1, 500);
+    //FIXME
+    //test
+    //old column-width for column 1: 500
+    int a = ui->tableWidget->columnWidth(0) + ui->tableWidget->columnWidth(2) + ui->tableWidget->columnWidth(3);
+    ui->tableWidget->setColumnWidth(1, ui->tableWidget->width() - a);
+}
+
+void MainWindow::redrawTable()
+{
+    ui->tableWidget->clearContents();
+    setList(parser->download());
 }

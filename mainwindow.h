@@ -25,10 +25,13 @@ public:
 
 private slots:
     void setList(QList<Menue> list);
+    void redrawTable();
 
 private:
     Ui::MainWindow *ui;
     WebParse *parser;
+    bool m_veggie;
+    QAction *checkVeggie;
 
 signals:
      void getDone(QList<Menue>);

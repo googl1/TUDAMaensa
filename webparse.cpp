@@ -28,6 +28,9 @@ WebParse::WebParse(QString location, QObject *parent) :
  */
 QList<Menue> WebParse::download()
 {
+    if (QDate::currentDate() == m_downloadDate)
+        return m_results;
+
     QUrl url("http://www.studentenwerkdarmstadt.de/essen/mensa-stadtmitte.html");
 
     QNetworkRequest request(url);
@@ -39,6 +42,8 @@ QList<Menue> WebParse::download()
     loop.exec();
 
     loop.deleteLater();
+
+    m_downloadDate = QDate::currentDate();
     return m_results;
 }
 
