@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QDateTime>
 #include <QMenuBar>
+#include <QDockWidget>
 
 /**
  * @brief MainWindow::MainWindow
@@ -17,7 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->setWindowTitle("TUDAMaensa");
+    //this->setWindowTitle("TUDAMaensa");
+    //this->setStyleSheet("background-color: black; border: none; color: white");
 
     m_veggie = false;
     checkVeggie = new QAction(tr("No meat please"), this);
@@ -25,6 +27,11 @@ MainWindow::MainWindow(QWidget *parent) :
     checkVeggie->setChecked(false);
     connect(checkVeggie, SIGNAL(triggered(bool)), this, SLOT(veggieTriggered(bool)));
     menuBar()->addAction(checkVeggie);
+
+//    QAction *settingsButton = new QAction(tr("Settings"), this);
+//    settingsButton->setCheckable(false);
+//    connect(settingsButton, SIGNAL(triggered(bool)), this, SLOT(menuButtonClicked()));
+//    menuBar()->addAction("Settings");
 }
 
 /**
@@ -70,9 +77,12 @@ void MainWindow::setList(QList<Menue> list)
 
     if (!parser->getDay().isEmpty())
          ui->label_day->setText(parser->getDay());
-    else if(date->date().dayOfWeek() < 3)
+    else if(date->date().dayOfWeek() > 5 && list.isEmpty()) {
         ui->label_day->setText("It's weekend, no " \
                                "crappy cafeteria food!");
+        //FIXME: test on weekend
+        return;
+    }
 
     ui->tableWidget->setRowCount(list.length());
 
@@ -113,7 +123,7 @@ void MainWindow::setList(QList<Menue> list)
     //test
     //old column-width for column 1: 500
     int a = ui->tableWidget->columnWidth(0) + ui->tableWidget->columnWidth(2) + ui->tableWidget->columnWidth(3);
-    ui->tableWidget->setColumnWidth(1, ui->tableWidget->width() - a - 40);
+    ui->tableWidget->setColumnWidth(1, ui->tableWidget->width() - a - 30);
 }
 
 void MainWindow::redrawTable()
@@ -126,4 +136,15 @@ void MainWindow::veggieTriggered(bool veg)
 {
     m_veggie = veg;
     redrawTable();
+}
+
+void MainWindow::menuButtonClicked()
+{
+//   // Qt::DockWidgetArea dwa(0x8);
+//    QDockWidget *settings = new QDockWidget(tr("Settings"));
+//    settings->addAction(new QAction(tr("test"), this));
+//    this->addDockWidget(Qt::BottomDockWidgetArea, settings);
+//    //settings->setLayout(QLayout settings));
+//    settings->setWidget (new QLabel("test"));
+//    settings->show();
 }
