@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "webparse.h"
+#include "settingsdialog.h"
 
 #include <QTextCodec>
 #include <QDebug>
@@ -8,7 +9,8 @@
 #include <QDateTime>
 #include <QMenuBar>
 #include <QDockWidget>
-
+#include <QLineEdit>
+#include <QMessageBox>
 /**
  * @brief MainWindow::MainWindow
  * @param parent
@@ -18,8 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //this->setWindowTitle("TUDAMaensa");
-    //this->setStyleSheet("background-color: black; border: none; color: white");
+
 
     m_veggie = false;
     checkVeggie = new QAction(tr("No meat please"), this);
@@ -28,10 +29,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(checkVeggie, SIGNAL(triggered(bool)), this, SLOT(veggieTriggered(bool)));
     menuBar()->addAction(checkVeggie);
 
-//    QAction *settingsButton = new QAction(tr("Settings"), this);
-//    settingsButton->setCheckable(false);
-//    connect(settingsButton, SIGNAL(triggered(bool)), this, SLOT(menuButtonClicked()));
-//    menuBar()->addAction("Settings");
+    QAction *settingsButton = new QAction(tr("Settings"), this);
+    settingsButton->setCheckable(true);
+    connect(settingsButton, SIGNAL(triggered(bool)), this, SLOT(menuButtonClicked()));
+    menuBar()->addAction(settingsButton);
 }
 
 /**
@@ -119,7 +120,6 @@ void MainWindow::setList(QList<Menue> list)
 
     ui->tableWidget->resizeColumnsToContents();
     ui->tableWidget->resizeRowsToContents();
-    //FIXME
     //test
     //old column-width for column 1: 500
     int a = ui->tableWidget->columnWidth(0) + ui->tableWidget->columnWidth(2) + ui->tableWidget->columnWidth(3);
@@ -140,11 +140,6 @@ void MainWindow::veggieTriggered(bool veg)
 
 void MainWindow::menuButtonClicked()
 {
-//   // Qt::DockWidgetArea dwa(0x8);
-//    QDockWidget *settings = new QDockWidget(tr("Settings"));
-//    settings->addAction(new QAction(tr("test"), this));
-//    this->addDockWidget(Qt::BottomDockWidgetArea, settings);
-//    //settings->setLayout(QLayout settings));
-//    settings->setWidget (new QLabel("test"));
-//    settings->show();
+    SettingsDialog *settings = new SettingsDialog();
+    settings->show();
 }

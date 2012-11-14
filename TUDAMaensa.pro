@@ -13,13 +13,16 @@ RESOURCES     = maensa.qrc
 SOURCES += main.cpp\
         mainwindow.cpp \
     menue.cpp \
-    webparse.cpp
+    webparse.cpp \
+    settingsdialog.cpp
 
 HEADERS  += mainwindow.h \
     menue.h \
-    webparse.h
+    webparse.h \
+    settingsdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    settingsdialog.ui
 
 CONFIG += mobility
 MOBILITY = 
