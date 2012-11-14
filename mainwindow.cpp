@@ -21,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
     m_veggie = false;
     checkVeggie = new QAction(tr("No meat please"), this);
     checkVeggie->setCheckable(true);
@@ -30,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     menuBar()->addAction(checkVeggie);
 
     QAction *settingsButton = new QAction(tr("Settings"), this);
-    settingsButton->setCheckable(true);
+    settingsButton->setCheckable(false);
     connect(settingsButton, SIGNAL(triggered(bool)), this, SLOT(menuButtonClicked()));
     menuBar()->addAction(settingsButton);
 }
