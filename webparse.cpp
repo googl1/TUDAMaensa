@@ -110,14 +110,16 @@ QList<Menue> WebParse::parsePage(QString html)
 
 /**
  * @brief WebParse::replaceHtml replaces html codes for
- *  german umlauts and quotation marks
+ *  german umlautsm ß and quotation marks.
+ *  Removes "Von unserer Suppenbar!"
  * @param in QString to look for umlauts in
  * @return QString, clean of html
  */
 QString WebParse::replaceHtml(QString in)
 {
     return in.replace("&uuml;", "ü").replace("&quot;", "\"")
-            .replace("&auml;", "ä").replace("&ouml;", "ö");
+            .replace("&auml;", "ä").replace("&ouml;", "ö")
+            .replace("&szlig;", "ß").remove("Von unserer Suppenbar! ");
 }
 
 /**
