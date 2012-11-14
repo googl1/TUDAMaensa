@@ -86,7 +86,7 @@ QList<Menue> WebParse::parsePage(QString html)
                   "valign=\"top\"><img class=\"spk_img\" src=\"comp" \
                   "onents/com_spk/images/[\\w]*pict_k.jpg\" alt=\"" \
                   "([\\w]*)\" width=\"50px\" />([\\w&;\\s!\\-\\(" \
-                  "\\d\\,\\)]*) [\\w]{1} ([\\d\\,]{4})");
+                  "\\d\\,\\)]*) [\\w]* ([\\d\\,]{4})");
     rx.setMinimal(true);
 
     while ((pos = rx.indexIn(html, pos)) != -1) {
