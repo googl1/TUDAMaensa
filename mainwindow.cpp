@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
     f.setPixelSize(23);
     ui->tableWidget->setFont(f);
 
+    ui->tableWidget->setWordWrap(true);
+
     m_sSettingsFile = QApplication::applicationDirPath() + ":/tudamaensa.conf";
 
     m_veggie = 0;
@@ -133,14 +135,10 @@ void MainWindow::setList(QList<Menue> list)
         ui->tableWidget->setItem(i - v, 0, type);
     }
 
-    ui->tableWidget->setWordWrap(true);
     ui->tableWidget->resizeColumnsToContents();
-    ui->tableWidget->resizeRowsToContents();
-
-    //test
-    //old column-width for column 1: 500
     int a = ui->tableWidget->columnWidth(0) + ui->tableWidget->columnWidth(2) + ui->tableWidget->columnWidth(3);
-    ui->tableWidget->setColumnWidth(1, ui->tableWidget->width() - a - 30);
+    ui->tableWidget->setColumnWidth(1, ui->tableWidget->width() - a - 40);
+    ui->tableWidget->resizeRowsToContents();
 }
 
 void MainWindow::redrawTable()

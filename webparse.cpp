@@ -88,7 +88,7 @@ QList<Menue> WebParse::parsePage(QString html)
                   "valign=\"top\"><img class=\"spk_img\" src=\"comp" \
                   "onents/com_spk/images/[\\w]*pict_k.jpg\" alt=\"" \
                   "([\\w]*)\" width=\"50px\" />([\\w&;\\s!\\-\\(" \
-                  "\\d\\,\\)]*) [\\w]* ([\\d\\,]{4})");
+                  "\\d\\,\\\\.)]*)[\\s]+[\\w]+[\\s]+([\\d\\,]{4})");
     rx.setMinimal(true);
 
     while ((pos = rx.indexIn(html, pos)) != -1) {
@@ -107,7 +107,7 @@ QList<Menue> WebParse::parsePage(QString html)
                   "valign=\"top\"><img class=\"spk_img\" src=\"comp" \
                   "onents/com_spk/images/[\\w]*pict_k.jpg\" alt=\"" \
                   "([\\w]*)\" width=\"50px\" />([\\w&;\\s!\\-\\(" \
-                  "\\d\\,\\)]*)<");
+                  "\\d\\,\\\\.)]*)<");
 
     while ((pos = rx.indexIn(html, pos)) != -1) {
         result.setLocation(rx.cap(1).replace("&nbsp;", ""));
@@ -128,7 +128,7 @@ QList<Menue> WebParse::parsePage(QString html)
     //<tr><td valign="top">&nbsp;</td><td valign="top">Pizza - Pizza - Pizza - Pizza Bitte beachten Sie unsere Aush&auml;nge !!!! NW 2,90 €</td></tr>
     rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)</td><td " \
                   "valign=\"top\">([\\w&;\\s!\\-\\(" \
-                  "\\d\\,\\)]*) [\\w]* ([\\d\\,]*)");
+                  "\\d\\,\\\\.)]*) [\\w]* ([\\d\\,]*)");
     rx.setMinimal(false);
 
     while ((pos = rx.indexIn(html, pos)) != -1) {
