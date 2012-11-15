@@ -30,6 +30,9 @@ QLabel { background-color: black; border: none; color: white }</string>
      </item>
      <item>
       <widget class="QComboBox" name="locationComboBox">
+       <property name="styleSheet">
+        <string notr="true">QComboBox QAbstractItemView { background-color: black}</string>
+       </property>
        <item>
         <property name="text">
          <string>Stadtmitte</string>
