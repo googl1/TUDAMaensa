@@ -13,12 +13,12 @@
  *  Schöfferstraße, Haardtring or Dieburg
  * @param parent parent
  */
-WebParse::WebParse(QString location, QObject *parent) :
+WebParse::WebParse(int location, QObject *parent) :
     QObject(parent)
 {
-    m_location = location;
+    setLocation(location);
 
-    m_qnam = new QNetworkAccessManager(this);
+    //m_qnam = new QNetworkAccessManager(this);
 }
 
 /**
@@ -28,10 +28,12 @@ WebParse::WebParse(QString location, QObject *parent) :
  */
 QList<Menue> WebParse::download()
 {
-    if (QDate::currentDate() == m_downloadDate)
-        return m_results;
+    m_qnam = new QNetworkAccessManager(this);
 
-    QUrl url("http://www.studentenwerkdarmstadt.de/essen/mensa-stadtmitte.html");
+    if (QDate::currentDate() == m_downloadDate[m_locationNum])
+        return m_results[m_locationNum];
+
+    QUrl url("http://www.studentenwerkdarmstadt.de/essen/mensa-" + m_location + ".html");
 
     QNetworkRequest request(url);
     connect(m_qnam, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished()));
@@ -41,10 +43,10 @@ QList<Menue> WebParse::download()
     connect(this, SIGNAL(parsed()), &loop, SLOT(quit()));
     loop.exec();
 
-    loop.deleteLater();
+    //loop.deleteLater();
 
-    m_downloadDate = QDate::currentDate();
-    return m_results;
+    m_downloadDate[m_locationNum] = QDate::currentDate();
+    return m_results[m_locationNum];
 }
 
 /**
@@ -55,11 +57,11 @@ void WebParse::replyFinished()
 {
     if (m_reply->error() == QNetworkReply::NoError ) {
         QString msg = m_reply->readAll();
-        m_results = parsePage(msg);
+        m_results[m_locationNum] = parsePage(msg);
     } else {
         qDebug() << "Network Error" << m_reply->errorString();
-        m_results = QList<Menue>();
-        m_results.append(Menue(m_reply->errorString(), "", "", ""));
+        m_results[m_locationNum] = QList<Menue>();
+        m_results[m_locationNum].append(Menue(m_reply->errorString(), "", "", ""));
     }
 
     m_reply->deleteLater();
@@ -138,4 +140,26 @@ QNetworkAccessManager *WebParse::qnam()
 QString WebParse::getDay() const
 {
     return m_day;
+}
+
+void WebParse::setLocation(int newLocation)
+{
+    m_locationNum = newLocation;
+    switch (newLocation) {
+    case 0:
+        m_location = "stadtmitte";
+        break;
+    case 1:
+        m_location = "lichtwiese";
+        break;
+    case 2:
+        m_location = "dieburg";
+        break;
+    case 3:
+        m_location = "schofferstrase";
+        break;
+    case 4:
+        m_location = "haardtring";
+        break;
+    }
 }

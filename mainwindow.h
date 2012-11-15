@@ -5,6 +5,7 @@
 
 #include "menue.h"
 #include "webparse.h"
+#include "settingsdialog.h"
 
 namespace Ui {
     class MainWindow;
@@ -28,12 +29,19 @@ private slots:
     void redrawTable();
     void veggieTriggered(bool veg);
     void menuButtonClicked();
+    void refreshClicked();
 
 private:
     Ui::MainWindow *ui;
     WebParse *parser;
-    bool m_veggie;
     QAction *checkVeggie;
+    SettingsDialog *settingsDialog;
+    QAction *settingsButton;
+    QAction *refreshButton;
+    QString m_sSettingsFile;
+    void load();
+    int m_location;
+    int m_veggie;
 
 signals:
      void getDone(QList<Menue>);

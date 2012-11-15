@@ -16,9 +16,7 @@
   <property name="styleSheet">
    <string notr="true">QDialog { background-color: black; border: none; color: white }
 QCheckBox { color: white }
-QLabel { background-color: black; border: none; color: white }
-QDialogButtonBox { background-color: black; border: none; color: white }
-</string>
+QLabel { background-color: black; border: none; color: white }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

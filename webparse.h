@@ -16,8 +16,9 @@ class WebParse : public QObject
     Q_OBJECT
 public:
     QList<Menue> download();
-    explicit WebParse(QString location, QObject *parent = 0);
+    explicit WebParse(int location, QObject *parent = 0);
     QString getDay() const;
+    void setLocation(int newLocation);
 
 private:
     QList<Menue> parsePage(QString html);
@@ -25,12 +26,13 @@ private:
     QNetworkAccessManager *qnam();
     QNetworkAccessManager *m_qnam;
     QString m_location;
-    QList<Menue> m_results;
+    int m_locationNum;
+    QList<Menue> m_results[5];
     QString m_today;
     QString breakName(QString in, int lineLen);
     QString replaceHtml(QString in);
     QString m_day;
-    QDate m_downloadDate;
+    QDate m_downloadDate[5];
 
 private slots:
     void replyFinished();

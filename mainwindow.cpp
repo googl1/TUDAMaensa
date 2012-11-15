@@ -11,6 +11,8 @@
 #include <QDockWidget>
 #include <QLineEdit>
 #include <QMessageBox>
+#include <QSettings>
+
 /**
  * @brief MainWindow::MainWindow
  * @param parent
@@ -21,7 +23,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_veggie = false;
+    m_sSettingsFile = QApplication::applicationDirPath() + ":/tudamaensa.conf";
+    load();
+
+    m_veggie = 0;
     checkVeggie = new QAction(tr("No meat please"), this);
     checkVeggie->setCheckable(true);
     checkVeggie->setChecked(false);
@@ -32,6 +37,11 @@ MainWindow::MainWindow(QWidget *parent) :
     settingsButton->setCheckable(false);
     connect(settingsButton, SIGNAL(triggered(bool)), this, SLOT(menuButtonClicked()));
     menuBar()->addAction(settingsButton);
+
+    QAction *refreshButton = new QAction(tr("Refresh"), this);
+    settingsButton->setCheckable(false);
+    connect(refreshButton, SIGNAL(triggered(bool)), this, SLOT(refreshClicked()));
+    menuBar()->addAction(refreshButton);
 }
 
 /**
@@ -57,7 +67,7 @@ void MainWindow::setDay(QString day)
  */
 void MainWindow::work()
 {
-    parser = new WebParse("Stadtmitte");
+    parser = new WebParse(m_location);
     setList(parser->download());
 }
 
@@ -127,6 +137,7 @@ void MainWindow::setList(QList<Menue> list)
 
 void MainWindow::redrawTable()
 {
+    parser->setLocation(m_location);
     ui->tableWidget->clearContents();
     setList(parser->download());
 }
@@ -139,6 +150,21 @@ void MainWindow::veggieTriggered(bool veg)
 
 void MainWindow::menuButtonClicked()
 {
-    SettingsDialog *settings = new SettingsDialog();
-    settings->show();
+    settingsDialog = new SettingsDialog();
+    settingsDialog->show();
+}
+
+void MainWindow::refreshClicked()
+{
+    load();
+    redrawTable();
+}
+
+void MainWindow::load()
+{
+    QSettings settings(m_sSettingsFile, QSettings::NativeFormat);
+    m_veggie = settings.value("veggie", 0).toInt();
+    m_location = settings.value("location", 0).toInt();
+
+    settings.deleteLater();
 }
