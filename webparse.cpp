@@ -101,6 +101,49 @@ QList<Menue> WebParse::parsePage(QString html)
         pos += rx.matchedLength();
     }
 
+    //look for food without price
+    pos = 0;
+    rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)</td><td " \
+                  "valign=\"top\"><img class=\"spk_img\" src=\"comp" \
+                  "onents/com_spk/images/[\\w]*pict_k.jpg\" alt=\"" \
+                  "([\\w]*)\" width=\"50px\" />([\\w&;\\s!\\-\\(" \
+                  "\\d\\,\\)]*)<");
+
+    while ((pos = rx.indexIn(html, pos)) != -1) {
+        result.setLocation(rx.cap(1).replace("&nbsp;", ""));
+        result.setType(rx.cap(2));
+        result.setName(replaceHtml(rx.cap(3)));
+        result.setPrice(rx.cap(4));
+
+        if(!result.getPrice().isEmpty())
+            result.setPrice(result.getPrice().append(" €"));
+
+        results.append(result);
+        pos += rx.matchedLength();
+    }
+
+    //look for some spezial offers
+    pos = 0;
+    //<tr><td valign="top">&nbsp;</td><td valign="top">Besuchen Sie unsere Nudeltheke ! T&auml;glich wechselnde Pastagerichte  NW 1,90 €      </td></tr>
+    //<tr><td valign="top">&nbsp;</td><td valign="top">Pizza - Pizza - Pizza - Pizza Bitte beachten Sie unsere Aush&auml;nge !!!! NW 2,90 €</td></tr>
+    rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)</td><td " \
+                  "valign=\"top\">([\\w&;\\s!\\-\\(" \
+                  "\\d\\,\\)]*) [\\w]* ([\\d\\,]*)");
+    rx.setMinimal(false);
+
+    while ((pos = rx.indexIn(html, pos)) != -1) {
+        result.setLocation(rx.cap(1).replace("&nbsp;", ""));
+        result.setType("");
+        result.setName(replaceHtml(rx.cap(2)));
+        result.setPrice(rx.cap(3));
+
+        if(!result.getPrice().isEmpty())
+            result.setPrice(result.getPrice().append(" €"));
+
+        results.append(result);
+        pos += rx.matchedLength();
+    }
+
     rx.setPattern("<br />&nbsp;<br /><table border=\"1\" class=" \
                   "\"spk_table\"><tr><th></th><th class=\"hl_" \
                   "today\">([\\d\\.\\s\\w,]*)</th></tr>");

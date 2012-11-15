@@ -127,8 +127,10 @@ void MainWindow::setList(QList<Menue> list)
         ui->tableWidget->setItem(i - v, 0, type);
     }
 
+    ui->tableWidget->setWordWrap(true);
     ui->tableWidget->resizeColumnsToContents();
     ui->tableWidget->resizeRowsToContents();
+
     //test
     //old column-width for column 1: 500
     int a = ui->tableWidget->columnWidth(0) + ui->tableWidget->columnWidth(2) + ui->tableWidget->columnWidth(3);
