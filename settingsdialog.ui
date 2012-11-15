@@ -14,24 +14,35 @@
    <string>Settings</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QDialog { background-color: black; border: none; color: white }
-QCheckBox { color: white }
-QLabel { background-color: black; border: none; color: white }</string>
+   <string notr="true"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Choose Location</string>
+        <string>Choose Location: </string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QComboBox" name="locationComboBox">
        <property name="styleSheet">
-        <string notr="true">QComboBox QAbstractItemView { background-color: black}</string>
+        <string notr="true"/>
        </property>
        <item>
         <property name="text">

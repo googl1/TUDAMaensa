@@ -17,8 +17,7 @@
    <string>TUDA Maensa</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QTableWidget { background-color: black; border: none; color: white }
-QLabel { background-color: black; border: none; color: white }</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
