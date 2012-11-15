@@ -17,6 +17,15 @@ public:
 
 private:
     Ui::SettingsDialog *ui;
+    int m_veggie;
+    int m_location;
+    QString m_sSettingsFile;
+    void load();
+
+private slots:
+    void locationChanged(int state);
+    void veggieChanged(int state);
+    void save();
 };
 
 #endif // SETTINGSDIALOG_H

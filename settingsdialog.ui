@@ -77,7 +77,7 @@ QDialogButtonBox { background-color: black; border: none; color: white }
       </spacer>
      </item>
      <item>
-      <widget class="QCheckBox" name="VeggieCheckBox">
+      <widget class="QCheckBox" name="veggieCheckBox">
        <property name="text">
         <string>Always use Veggie-Mode</string>
        </property>
