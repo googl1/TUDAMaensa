@@ -23,6 +23,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    QFont f = ui->tableWidget->font();
+    f.setPixelSize(23);
+    ui->tableWidget->setFont(f);
+
     m_sSettingsFile = QApplication::applicationDirPath() + ":/tudamaensa.conf";
 
     m_veggie = 0;
