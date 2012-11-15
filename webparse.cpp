@@ -43,7 +43,7 @@ QList<Menue> WebParse::download()
     connect(this, SIGNAL(parsed()), &loop, SLOT(quit()));
     loop.exec();
 
-    //loop.deleteLater();
+    loop.deleteLater();
 
     m_downloadDate[m_locationNum] = QDate::currentDate();
     return m_results[m_locationNum];

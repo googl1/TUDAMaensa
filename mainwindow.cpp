@@ -24,12 +24,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     m_sSettingsFile = QApplication::applicationDirPath() + ":/tudamaensa.conf";
-    load();
 
     m_veggie = 0;
     checkVeggie = new QAction(tr("No meat please"), this);
     checkVeggie->setCheckable(true);
-    checkVeggie->setChecked(false);
     connect(checkVeggie, SIGNAL(triggered(bool)), this, SLOT(veggieTriggered(bool)));
     menuBar()->addAction(checkVeggie);
 
@@ -42,6 +40,8 @@ MainWindow::MainWindow(QWidget *parent) :
     settingsButton->setCheckable(false);
     connect(refreshButton, SIGNAL(triggered(bool)), this, SLOT(refreshClicked()));
     menuBar()->addAction(refreshButton);
+
+    load();
 }
 
 /**
@@ -165,6 +165,8 @@ void MainWindow::load()
     QSettings settings(m_sSettingsFile, QSettings::NativeFormat);
     m_veggie = settings.value("veggie", 0).toInt();
     m_location = settings.value("location", 0).toInt();
+
+    checkVeggie->setChecked(m_veggie);
 
     settings.deleteLater();
 }
