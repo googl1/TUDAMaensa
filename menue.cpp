@@ -68,7 +68,7 @@ QString Menue::getPrice() const
  */
 bool Menue::isVeggie() const
 {
-    return !m_type.compare("fleischlos");
+    return !m_type.compare("fleischlos") || m_type.isEmpty();
 }
 
 /**
