@@ -109,13 +109,15 @@ void MainWindow::setList(QList<Menue> list)
         price = new QTableWidgetItem();
         type = new QTableWidgetItem();
 
-        typePic = QString(":/img/%1pict_k.png")
-                .arg(list.at(i).getType());
-        if (!QFile::exists(typePic))
-            qDebug() << QString("Image %1 not found.")
-                        .arg(typePic);
-        else
-            type->setIcon(QIcon(QPixmap(typePic)));
+        if (!list.at(i).getType().isEmpty()) {
+            typePic = QString(":/img/%1pict_k.png")
+                    .arg(list.at(i).getType());
+            if (!QFile::exists(typePic))
+                qDebug() << QString("Image %1 not found.")
+                            .arg(typePic);
+            else
+                type->setIcon(QIcon(QPixmap(typePic)));
+        }
 
         name->setText(list.at(i).getName());
         location->setText(list.at(i).getLocation());
