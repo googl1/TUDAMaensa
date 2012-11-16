@@ -1,6 +1,5 @@
 #include <QtGui/QApplication>
 #include <QTextCodec>
-#include <QMenuBar>
 
 #include "mainwindow.h"
 

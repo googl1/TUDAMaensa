@@ -1,17 +1,13 @@
+#include <QDebug>
+#include <QFile>
+#include <QMenuBar>
+#include <QSettings>
+#include <QStringBuilder>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "webparse.h"
 #include "settingsdialog.h"
-
-#include <QTextCodec>
-#include <QDebug>
-#include <QFile>
-#include <QDateTime>
-#include <QMenuBar>
-#include <QDockWidget>
-#include <QLineEdit>
-#include <QMessageBox>
-#include <QSettings>
 
 #define QT_USE_FAST_CONCATENATION
 #define QT_USE_FAST_OPERATOR_PLUS
@@ -32,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->tableWidget->setWordWrap(true);
 
-    m_sSettingsFile = QApplication::applicationDirPath() + ":/tudamaensa.conf";
+    m_sSettingsFile = QApplication::applicationDirPath() % "/tudamaensa.conf";
 
     m_veggie = 0;
     checkVeggie = new QAction(tr("No meat please"), this);
@@ -95,7 +91,7 @@ void MainWindow::setList(QList<Menue> list)
     int v = 0;
 
     if (!parser->getDay().isEmpty())
-         ui->label_day->setText(parser->getLocationName() + " - " + parser->getDay());
+         ui->label_day->setText(parser->getLocationName() % " - " % parser->getDay());
     else if(date->date().dayOfWeek() > 5 && list.isEmpty()) {
         ui->label_day->setText("It's weekend, no " \
                                "crappy cafeteria food!");

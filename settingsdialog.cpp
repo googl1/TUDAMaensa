@@ -1,8 +1,8 @@
+#include <QSettings>
+#include <QStringBuilder>
+
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
-
-#include <QDebug>
-#include <QSettings>
 
 #define QT_USE_FAST_CONCATENATION
 #define QT_USE_FAST_OPERATOR_PLUS
@@ -13,7 +13,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_sSettingsFile = QApplication::applicationDirPath() + ":/tudamaensa.conf";
+    m_sSettingsFile = QApplication::applicationDirPath() % "/tudamaensa.conf";
     load();
 
     ui->veggieCheckBox->setChecked(m_veggie);

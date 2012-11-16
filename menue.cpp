@@ -1,7 +1,6 @@
-#include "menue.h"
-
 #include <QStringBuilder>
-#include <QTextEdit>
+
+#include "menue.h"
 
 #define QT_USE_FAST_CONCATENATION
 #define QT_USE_FAST_OPERATOR_PLUS

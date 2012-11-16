@@ -1,8 +1,7 @@
 #include <QRegExp>
 #include <QDebug>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QTimer>
 #include <QEventLoop>
+#include <QStringBuilder>
 
 #include "webparse.h"
 #include "menue.h"
@@ -20,8 +19,6 @@ WebParse::WebParse(int location, QObject *parent) :
     QObject(parent)
 {
     setLocation(location);
-
-    //m_qnam = new QNetworkAccessManager(this);
 }
 
 /**
@@ -36,7 +33,7 @@ QList<Menue> WebParse::download()
     if (QDate::currentDate() == m_downloadDate[m_locationNum])
         return m_results[m_locationNum];
 
-    QUrl url("http://www.studentenwerkdarmstadt.de/essen/mensa-" + m_location + ".html");
+    QUrl url("http://www.studentenwerkdarmstadt.de/essen/mensa-" % m_location % ".html");
 
     QNetworkRequest request(url);
     connect(m_qnam, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished()));
