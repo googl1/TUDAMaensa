@@ -13,6 +13,9 @@
 #include <QMessageBox>
 #include <QSettings>
 
+#define QT_USE_FAST_CONCATENATION
+#define QT_USE_FAST_OPERATOR_PLUS
+
 /**
  * @brief MainWindow::MainWindow
  * @param parent
@@ -92,7 +95,7 @@ void MainWindow::setList(QList<Menue> list)
     int v = 0;
 
     if (!parser->getDay().isEmpty())
-         ui->label_day->setText(parser->getDay());
+         ui->label_day->setText(parser->getLocationName() + " - " + parser->getDay());
     else if(date->date().dayOfWeek() > 5 && list.isEmpty()) {
         ui->label_day->setText("It's weekend, no " \
                                "crappy cafeteria food!");

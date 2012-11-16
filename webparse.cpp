@@ -7,6 +7,9 @@
 #include "webparse.h"
 #include "menue.h"
 
+#define QT_USE_FAST_CONCATENATION
+#define QT_USE_FAST_OPERATOR_PLUS
+
 /**
  * @brief WebParse::WebParse WebParse Constructor
  * @param location Choosen location: Stadtmitte, Lichtwiese,
@@ -205,4 +208,9 @@ void WebParse::setLocation(int newLocation)
         m_location = "haardtring";
         break;
     }
+}
+
+QString WebParse::getLocationName()
+{
+    return m_location.left(1).toUpper() + m_location.mid(1);
 }

@@ -19,6 +19,7 @@ public:
     explicit WebParse(int location, QObject *parent = 0);
     QString getDay() const;
     void setLocation(int newLocation);
+    QString getLocationName();
 
 private:
     QList<Menue> parsePage(QString html);

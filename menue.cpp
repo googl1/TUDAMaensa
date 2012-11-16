@@ -3,6 +3,9 @@
 #include <QStringBuilder>
 #include <QTextEdit>
 
+#define QT_USE_FAST_CONCATENATION
+#define QT_USE_FAST_OPERATOR_PLUS
+
 /**
  * @brief Menue::Menue
  */
