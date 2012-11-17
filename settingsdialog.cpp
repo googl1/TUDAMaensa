@@ -29,14 +29,21 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_sSettingsFile = QApplication::applicationDirPath() % "/tudamaensa.conf";
+    QString applicationPath = QApplication::applicationDirPath();
+    if (applicationPath.endsWith("lib"))
+        m_sSettingsFile = applicationPath % "/../tudamaensa.conf";
+    else
+        m_sSettingsFile = applicationPath % "/tudamaensa.conf"
+                             ;
     load();
 
     ui->veggieCheckBox->setChecked(m_veggie);
     ui->locationComboBox->setCurrentIndex(m_location);
 
-    connect(ui->veggieCheckBox, SIGNAL(stateChanged(int)), this, SLOT(veggieChanged(int)));
-    connect(ui->locationComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(locationChanged(int)));
+    connect(ui->veggieCheckBox, SIGNAL(stateChanged(int)),
+            this, SLOT(veggieChanged(int)));
+    connect(ui->locationComboBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(locationChanged(int)));
     connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(save()));
 }
 

@@ -19,6 +19,7 @@
 #include <QMenuBar>
 #include <QSettings>
 #include <QStringBuilder>
+#include <QLocale>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -44,22 +45,29 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->tableWidget->setWordWrap(true);
 
-    m_sSettingsFile = QApplication::applicationDirPath() % "/tudamaensa.conf";
+    QString applicationPath = QApplication::applicationDirPath();
+    if (applicationPath.endsWith("lib"))
+        m_sSettingsFile = applicationPath % "/../tudamaensa.conf";
+    else
+        m_sSettingsFile = applicationPath % "/tudamaensa.conf";
 
     m_veggie = 0;
     checkVeggie = new QAction(tr("No meat please"), this);
     checkVeggie->setCheckable(true);
-    connect(checkVeggie, SIGNAL(triggered(bool)), this, SLOT(veggieTriggered(bool)));
+    connect(checkVeggie, SIGNAL(triggered(bool)), this,
+            SLOT(veggieTriggered(bool)));
     menuBar()->addAction(checkVeggie);
 
     QAction *settingsButton = new QAction(tr("Settings"), this);
     settingsButton->setCheckable(false);
-    connect(settingsButton, SIGNAL(triggered(bool)), this, SLOT(menuButtonClicked()));
+    connect(settingsButton, SIGNAL(triggered(bool)), this,
+            SLOT(menuButtonClicked()));
     menuBar()->addAction(settingsButton);
 
     QAction *refreshButton = new QAction(tr("Refresh"), this);
     settingsButton->setCheckable(false);
-    connect(refreshButton, SIGNAL(triggered(bool)), this, SLOT(refreshClicked()));
+    connect(refreshButton, SIGNAL(triggered(bool)), this,
+            SLOT(refreshClicked()));
     menuBar()->addAction(refreshButton);
 
     load();
@@ -98,7 +106,6 @@ void MainWindow::work()
  */
 void MainWindow::setList(QList<Menue> list)
 {
-    QDateTime *date = new QDateTime();
     QTableWidgetItem *name;
     QTableWidgetItem *location;
     QTableWidgetItem *price;
@@ -107,11 +114,10 @@ void MainWindow::setList(QList<Menue> list)
     int v = 0;
 
     if (!parser->getDay().isEmpty())
-         ui->label_day->setText(parser->getLocationName() % " - " % parser->getDay());
-    else if(date->date().dayOfWeek() > 5 && list.isEmpty()) {
-        ui->label_day->setText("It's weekend, no " \
-                               "crappy cafeteria food!");
-        //FIXME: test on weekend
+         ui->label_day->setText(parser->getLocationName()
+                                % " - " % parser->getDay());
+    else if(list.isEmpty()) {
+        ui->label_day->setText("No crappy cafeteria food today!");
         return;
     }
 
@@ -151,8 +157,11 @@ void MainWindow::setList(QList<Menue> list)
     }
 
     ui->tableWidget->resizeColumnsToContents();
-    int a = ui->tableWidget->columnWidth(0) + ui->tableWidget->columnWidth(2) + ui->tableWidget->columnWidth(3);
-    ui->tableWidget->setColumnWidth(1, ui->tableWidget->width() - a - 40);
+    int a = ui->tableWidget->columnWidth(0)
+            + ui->tableWidget->columnWidth(2)
+            + ui->tableWidget->columnWidth(3);
+    ui->tableWidget->setColumnWidth(1, ui->tableWidget->width()
+                                    - a - 40);
     ui->tableWidget->resizeRowsToContents();
 }
 

@@ -49,10 +49,12 @@ QList<Menue> WebParse::download()
     if (QDate::currentDate() == m_downloadDate[m_locationNum])
         return m_results[m_locationNum];
 
-    QUrl url("http://www.studentenwerkdarmstadt.de/essen/mensa-" % m_location % ".html");
+    QUrl url("http://www.studentenwerkdarmstadt.de/essen/mensa-"
+             % m_location % ".html");
 
     QNetworkRequest request(url);
-    connect(m_qnam, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished()));
+    connect(m_qnam, SIGNAL(finished(QNetworkReply*)), this,
+            SLOT(replyFinished()));
     m_reply = m_qnam->get(request);
 
     QEventLoop loop;
@@ -77,7 +79,8 @@ void WebParse::replyFinished()
     } else {
         qDebug() << "Network Error" << m_reply->errorString();
         m_results[m_locationNum] = QList<Menue>();
-        m_results[m_locationNum].append(Menue(m_reply->errorString(), "", "", ""));
+        m_results[m_locationNum].append(Menue(m_reply->errorString(),
+                                              "", "", ""));
     }
 
     m_reply->deleteLater();
@@ -140,8 +143,6 @@ QList<Menue> WebParse::parsePage(QString html)
 
     //look for some spezial offers
     pos = 0;
-    //<tr><td valign="top">&nbsp;</td><td valign="top">Besuchen Sie unsere Nudeltheke ! T&auml;glich wechselnde Pastagerichte  NW 1,90 €      </td></tr>
-    //<tr><td valign="top">&nbsp;</td><td valign="top">Pizza - Pizza - Pizza - Pizza Bitte beachten Sie unsere Aush&auml;nge !!!! NW 2,90 €</td></tr>
     rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)</td><td " \
                   "valign=\"top\">([\\w&;\\s!\\-\\(" \
                   "\\d\\,\\\\.)]*) [\\w]* ([\\d\\,]*)");
