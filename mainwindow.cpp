@@ -127,7 +127,7 @@ void MainWindow::setList(QList<Menue> list)
                                 % " - " % parser->getDay());
     else if(list.isEmpty()) {
         ui->label_day->setText("No crappy cafeteria food today!");
-        //FIXME uncomment this return;
+        return;
     }
 
     ui->tableWidget->setRowCount(list.length());
