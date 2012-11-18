@@ -33,8 +33,18 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     if (applicationPath.endsWith("lib"))
         m_sSettingsFile = applicationPath % "/../tudamaensa.conf";
     else
-        m_sSettingsFile = applicationPath % "/tudamaensa.conf"
-                             ;
+        m_sSettingsFile = applicationPath % "/tudamaensa.conf";
+
+    //carstens andorid-color-fix
+    int r = 0; int g = 0; int b = 0;
+    ui->locationComboBox->palette().color(ui->locationComboBox
+                                          ->backgroundRole())
+            .getRgb(&r, &g, &b);
+    ui->locationComboBox->setStyleSheet
+            (QString("QComboBox QAbstractItemView { background-color:" \
+                     "rgb(%1,%2,%3) }").arg(r).arg(g).arg(b));
+
+    //load settings
     load();
 
     ui->veggieCheckBox->setChecked(m_veggie);

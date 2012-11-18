@@ -51,6 +51,15 @@ MainWindow::MainWindow(QWidget *parent) :
     else
         m_sSettingsFile = applicationPath % "/tudamaensa.conf";
 
+    //carstens android-color-fix
+    int r = 0; int g = 0; int b = 0;
+    ui->tableWidget->palette().color(ui->tableWidget->backgroundRole())
+            .getRgb(&r, &g, &b);
+    ui->tableWidget->setStyleSheet(QString("QTableWidget { background" \
+                                           "-color: rgb(%1,%2,%3) }")
+                                   .arg(r).arg(g).arg(b));
+
+    //fill menuBar
     m_veggie = 0;
     checkVeggie = new QAction(tr("No meat please"), this);
     checkVeggie->setCheckable(true);
@@ -118,7 +127,7 @@ void MainWindow::setList(QList<Menue> list)
                                 % " - " % parser->getDay());
     else if(list.isEmpty()) {
         ui->label_day->setText("No crappy cafeteria food today!");
-        return;
+        //FIXME uncomment this return;
     }
 
     ui->tableWidget->setRowCount(list.length());
