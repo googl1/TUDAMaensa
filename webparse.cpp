@@ -19,6 +19,10 @@
 #include <QEventLoop>
 #include <QStringBuilder>
 
+//test
+#include <QtWebKit/qwebpage.h>
+#include <QtWebKit/QWebElementCollection>
+
 #include "webparse.h"
 #include "menue.h"
 
@@ -49,8 +53,14 @@ QList<Menue> WebParse::download()
     if (QDate::currentDate() == m_downloadDate[m_locationNum])
         return m_results[m_locationNum];
 
-    QUrl url("http://www.studentenwerkdarmstadt.de/essen/mensa-"
-             % m_location % ".html");
+    //test
+//    QUrl url("https://webcache.googleusercontent.com/search?q=cache:" \
+//             "1ssSs4DcKXYJ:www.studentenwerkdarmstadt.de/index.php/de" \
+//             "/essen-und-trinken/eventmanagement/angebot/77-essen-und-" \
+//             "trinken+&cd=2&hl=de&ct=clnk&client=iceweasel-a");
+
+    QUrl url("http://www.studentenwerkdarmstadt.de/index.php/de/" \
+             "essen-und-trinken/speisekarten/" % m_location);
 
     QNetworkRequest request(url);
     connect(m_qnam, SIGNAL(finished(QNetworkReply*)), this,
@@ -98,18 +108,22 @@ QList<Menue> WebParse::parsePage(QString html)
     Menue result;
     int pos = 0;
 
-    QRegExp rx("<tr><th></th><th class=\"hl_today\">([\\w,\\s\\." \
-               "\\d]+)</th></tr>");
+//    QRegExp rx("<tr><th>[\\s]*</th><th class=\"hl_today\">([\\w,\\s\\." \
+  //             "\\d]+)</th></tr>");
+    QRegExp rx("<tr><th> </th><th class=\"hl_today\">([\\w,\\s\\.\\d]+)</th></tr>");
     if (rx.indexIn(html) != -1)
-        m_today = rx.cap(1);
+        m_day = rx.cap(1);
 
-    rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)</td><td " \
-                  "valign=\"top\"><img class=\"spk_img\" src=\"comp" \
-                  "onents/com_spk/images/[\\w]*pict_k.jpg\" alt=\"" \
-                  "([\\w]*)\" width=\"50px\" />([\\w&;\\s!\\-\\(" \
-                  "\\d\\,\\\\.)]*)[\\s]+[\\w]+[\\s]+([\\d\\,]{4})");
-    rx.setMinimal(true);
+    //old
+//    rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)</td><td " \
+//                  "valign=\"top\"><img class=\"spk_img\" src=\"comp" \
+//                  "onents/com_spk/images/[\\w]*pict_k.jpg\" alt=\"" \
+//                  "([\\w]*)\" width=\"40px\" />([\\w&;\\s!\\-\\(" \
+//                  "\\d\\,\\\\.)]*)");//[\\s]+[\\w]+[\\s]+([\\d\\,]{4})");
+    //rx.setMinimal(false);
 
+    //test
+    rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)</td><td valign=\"top\"><img class=\"spk_img\" src=\"/components/com_spk/images/[\\w]*pict_k.jpg\" alt=\"([\\w]*)\" width=\"40px\" />([\\w&;\\s!\\-\\(\\d\\,\\\\.)]+)[\\s]+[\\w]+[\\s]+([\\d\\,]+)[\\s]+&euro;[\\s]*</td></tr>");
     while ((pos = rx.indexIn(html, pos)) != -1) {
         result.setLocation(rx.cap(1).replace("&nbsp;", ""));
         result.setType(rx.cap(2));
@@ -125,7 +139,7 @@ QList<Menue> WebParse::parsePage(QString html)
     rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)</td><td " \
                   "valign=\"top\"><img class=\"spk_img\" src=\"comp" \
                   "onents/com_spk/images/[\\w]*pict_k.jpg\" alt=\"" \
-                  "([\\w]*)\" width=\"50px\" />([\\w&;\\s!\\-\\(" \
+                  "([\\w]*)\" width=\"40px\" />([\\w&;\\s!\\-\\(" \
                   "\\d\\,\\\\.)]*)<");
 
     while ((pos = rx.indexIn(html, pos)) != -1) {

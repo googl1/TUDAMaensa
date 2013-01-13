@@ -45,7 +45,6 @@ private:
     QString m_location;
     int m_locationNum;
     QList<Menue> m_results[5];
-    QString m_today;
     QString breakName(QString in, int lineLen);
     QString replaceHtml(QString in);
     QString m_day;
