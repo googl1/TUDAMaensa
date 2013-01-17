@@ -126,7 +126,7 @@ QList<Menue> WebParse::parsePage(QString html)
     rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)</td><td valign=\"top\"><img class=\"spk_img\" src=\"/components/com_spk/images/[\\w]*pict_k.jpg\" alt=\"([\\w]*)\" width=\"40px\" />([\\w&;\\s!\\-\\(\\d\\,\\\\.)]+)[\\s]+[\\w]+[\\s]+([\\d\\,]+)[\\s]+&euro;[\\s]*</td></tr>");
     while ((pos = rx.indexIn(html, pos)) != -1) {
         result.setLocation(rx.cap(1).replace("&nbsp;", ""));
-        result.setType(rx.cap(2));
+        result.setType(rx.cap(2).replace("ü","ue"));
         result.setName(replaceHtml(rx.cap(3)));
         result.setPrice(rx.cap(4).append(" €"));
 
