@@ -67,6 +67,13 @@ MainWindow::MainWindow(QWidget *parent) :
             SLOT(veggieTriggered(bool)));
     menuBar()->addAction(checkVeggie);
 
+    m_vegan = 0;
+    checkVegan = new QAction(tr("Fuck! I'm vegan."), this);
+    checkVegan->setCheckable(true);
+    connect(checkVegan, SIGNAL(triggered(bool)), this,
+            SLOT(veganTriggered(bool)));
+    menuBar()->addAction(checkVegan);
+
     QAction *settingsButton = new QAction(tr("Settings"), this);
     settingsButton->setCheckable(false);
     connect(settingsButton, SIGNAL(triggered(bool)), this,
@@ -133,8 +140,14 @@ void MainWindow::setList(QList<Menue> list)
     ui->tableWidget->setRowCount(list.length());
 
     for (int i = 0; i < list.length(); i++) {
-
+        m_jump = 0;
         if (m_veggie && !list.at(i).isVeggie()) {
+            v++;
+            ui->tableWidget->setRowCount(list.length() - v);
+            m_jump = 1;
+            continue;
+        }
+        if(m_vegan && !list.at(i).isVegan() && !m_jump) {
             v++;
             ui->tableWidget->setRowCount(list.length() - v);
             continue;
@@ -187,6 +200,12 @@ void MainWindow::veggieTriggered(bool veg)
     redrawTable();
 }
 
+void MainWindow::veganTriggered(bool vgn)
+{
+    m_vegan = vgn;
+    redrawTable();
+}
+
 void MainWindow::menuButtonClicked()
 {
     settingsDialog = new SettingsDialog();
@@ -204,7 +223,9 @@ void MainWindow::load()
     QSettings settings(m_sSettingsFile, QSettings::NativeFormat);
     m_veggie = settings.value("veggie", 0).toInt();
     m_location = settings.value("location", 0).toInt();
+    m_vegan = settings.value("vegan", 0).toInt();
 
+    checkVegan->setChecked(m_vegan);
     checkVeggie->setChecked(m_veggie);
 
     settings.deleteLater();

@@ -44,6 +44,7 @@ private slots:
     void setList(QList<Menue> list);
     void redrawTable();
     void veggieTriggered(bool veg);
+    void veganTriggered(bool vgn);
     void menuButtonClicked();
     void refreshClicked();
 
@@ -51,6 +52,7 @@ private:
     Ui::MainWindow *ui;
     WebParse *parser;
     QAction *checkVeggie;
+    QAction *checkVegan;
     SettingsDialog *settingsDialog;
     QAction *settingsButton;
     QAction *refreshButton;
@@ -58,6 +60,8 @@ private:
     void load();
     int m_location;
     int m_veggie;
+    int m_vegan;
+    int m_jump;
 
 signals:
      void getDone(QList<Menue>);

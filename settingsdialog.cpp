@@ -48,10 +48,13 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     load();
 
     ui->veggieCheckBox->setChecked(m_veggie);
+    ui->veganCheckBox->setChecked(m_vegan);
     ui->locationComboBox->setCurrentIndex(m_location);
 
     connect(ui->veggieCheckBox, SIGNAL(stateChanged(int)),
             this, SLOT(veggieChanged(int)));
+    connect(ui->veganCheckBox, SIGNAL(stateChanged(int)),
+            this, SLOT(veganChanged(int)));
     connect(ui->locationComboBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(locationChanged(int)));
     connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(save()));
@@ -67,6 +70,11 @@ void SettingsDialog::veggieChanged(int state)
     m_veggie = state;
 }
 
+void SettingsDialog::veganChanged(int state)
+{
+    m_vegan = state;
+}
+
 void SettingsDialog::locationChanged(int state)
 {
     m_location = state;
@@ -77,6 +85,7 @@ void SettingsDialog::save()
     QSettings settings(m_sSettingsFile, QSettings::NativeFormat);
     settings.setValue("location", m_location);
     settings.setValue("veggie", m_veggie);
+    settings.setValue("vegan", m_vegan);
 
     settings.deleteLater();
 
@@ -87,6 +96,7 @@ void SettingsDialog::load()
 {
     QSettings settings(m_sSettingsFile, QSettings::NativeFormat);
     m_veggie = settings.value("veggie", 0).toInt();
+    m_vegan = settings.value("vegan", 0).toInt();
     m_location = settings.value("location", 0).toInt();
 
     settings.deleteLater();

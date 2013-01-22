@@ -34,6 +34,7 @@ public:
     QString getType() const;
     QString getPrice() const;
     bool isVeggie() const;
+    bool isVegan() const;
     void setLocation(QString location);
     void setName(QString name);
     void setType(QString type);

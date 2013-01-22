@@ -34,6 +34,7 @@ public:
 private:
     Ui::SettingsDialog *ui;
     int m_veggie;
+    int m_vegan;
     int m_location;
     QString m_sSettingsFile;
     void load();
@@ -41,6 +42,7 @@ private:
 private slots:
     void locationChanged(int state);
     void veggieChanged(int state);
+    void veganChanged(int state);
     void save();
 };
 

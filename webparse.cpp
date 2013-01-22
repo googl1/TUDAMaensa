@@ -108,26 +108,24 @@ QList<Menue> WebParse::parsePage(QString html)
     Menue result;
     int pos = 0;
 
-//    QRegExp rx("<tr><th>[\\s]*</th><th class=\"hl_today\">([\\w,\\s\\." \
-  //             "\\d]+)</th></tr>");
     QRegExp rx("<tr><th> </th><th class=\"hl_today\">([\\w,\\s\\.\\d]+)</th></tr>");
     if (rx.indexIn(html) != -1)
         m_day = rx.cap(1);
 
-    //old
-//    rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)</td><td " \
-//                  "valign=\"top\"><img class=\"spk_img\" src=\"comp" \
-//                  "onents/com_spk/images/[\\w]*pict_k.jpg\" alt=\"" \
-//                  "([\\w]*)\" width=\"40px\" />([\\w&;\\s!\\-\\(" \
-//                  "\\d\\,\\\\.)]*)");//[\\s]+[\\w]+[\\s]+([\\d\\,]{4})");
-    //rx.setMinimal(false);
-
-    //test
-    rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)</td><td valign=\"top\"><img class=\"spk_img\" src=\"/components/com_spk/images/[\\w]*pict_k.jpg\" alt=\"([\\w]*)\" width=\"40px\" />([\\w&;\\s!\\-\\(\\d\\,\\\\.)]+)[\\s]+[\\w]+[\\s]+([\\d\\,]+)[\\s]+&euro;[\\s]*</td></tr>");
+    rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)" \
+                  "</td><td valign=\"top\"><img class=\"spk_" \
+                  "img\" src=\"/components/com_spk/images/[\\w]*" \
+                  "pict_k.jpg\" alt=\"([\\w]*)\" width=\"40px\" " \
+                  "/>([\\w&;\\s!\\-\\(\\d\\,\\\\.)]+)[\\s]+[\\w]+" \
+                  "[\\s]+([\\d\\,]+)[\\s]+&euro;[\\s]*" \
+                  "([\\w&;!\\-\\(\\d\\,\\\\.)]*)[\\s]*</td></tr>");
     while ((pos = rx.indexIn(html, pos)) != -1) {
         result.setLocation(rx.cap(1).replace("&nbsp;", ""));
         result.setType(rx.cap(2).replace("ü","ue"));
-        result.setName(replaceHtml(rx.cap(3)));
+        if (rx.cap(5).isNull())
+            result.setName(replaceHtml(rx.cap(3)));
+        else
+            result.setName(replaceHtml(rx.cap(3)%' '%rx.cap(5)));
         result.setPrice(rx.cap(4).append(" €"));
 
         results.append(result);
@@ -159,7 +157,7 @@ QList<Menue> WebParse::parsePage(QString html)
     pos = 0;
     rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)</td><td " \
                   "valign=\"top\">([\\w&;\\s!\\-\\(" \
-                  "\\d\\,\\\\.)]*) [\\w]* ([\\d\\,]*)");
+                  "\\d\\,\\\\.)]*)[\\s]+[\\w]+[\\s]+([\\d\\,]*)");
     rx.setMinimal(false);
 
     while ((pos = rx.indexIn(html, pos)) != -1) {
@@ -174,12 +172,6 @@ QList<Menue> WebParse::parsePage(QString html)
         results.append(result);
         pos += rx.matchedLength();
     }
-
-    rx.setPattern("<br />&nbsp;<br /><table border=\"1\" class=" \
-                  "\"spk_table\"><tr><th></th><th class=\"hl_" \
-                  "today\">([\\d\\.\\s\\w,]*)</th></tr>");
-    if (rx.indexIn(html) != -1)
-        m_day = rx.cap(1);
 
     return results;
 }
@@ -230,10 +222,10 @@ void WebParse::setLocation(int newLocation)
         m_location = "dieburg";
         break;
     case 3:
-        m_location = "schofferstrase";
+        m_location = "schoefferstrasse";
         break;
     case 4:
-        m_location = "haardtring";
+        m_location = "bistro-haardtring";
         break;
     }
 }

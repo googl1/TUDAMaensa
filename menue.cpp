@@ -90,6 +90,15 @@ bool Menue::isVeggie() const
 }
 
 /**
+ * @brief Menue::isVegan tells if menu says it would be vegan
+ * @return true if vegan, false if not
+ */
+bool Menue::isVegan() const
+{
+    return m_name.contains("vegan", Qt::CaseInsensitive);
+}
+
+/**
  * @brief Menue::setLocation sets m_location
  * @param location location of menu
  */
