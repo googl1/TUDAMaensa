@@ -86,7 +86,7 @@ QString Menue::getPrice() const
  */
 bool Menue::isVeggie() const
 {
-    return !m_type.compare("fleischlos") || m_type.isEmpty();
+    return !m_type.compare("fleischlos") || !m_type.compare("vegan") || m_type.isEmpty();
 }
 
 /**
@@ -95,7 +95,7 @@ bool Menue::isVeggie() const
  */
 bool Menue::isVegan() const
 {
-    return m_name.contains("vegan", Qt::CaseInsensitive);
+    return !m_type.compare("vegan");
 }
 
 /**

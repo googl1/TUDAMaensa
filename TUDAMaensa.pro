@@ -42,4 +42,5 @@ OTHER_FILES += \
     img/rindpict_k.png \
     img/lammpict_k.png \
     img/gefluegelpict_k.png \
-    img/fleischlospict_k.png
+    img/fleischlospict_k.png \
+    img/veganpict_k.png

@@ -114,7 +114,7 @@ QList<Menue> WebParse::parsePage(QString html)
 
     rx.setPattern("<tr><td valign=\"top\">([\\s\\w&;\\.]*)" \
                   "</td><td valign=\"top\"><img class=\"spk_" \
-                  "img\" src=\"/components/com_spk/images/[\\w]*" \
+                  "img\" src=\"/components/com_spk/images/[\\w\\;&]*" \
                   "pict_k.jpg\" alt=\"([\\w]*)\" width=\"40px\" " \
                   "/>([\\w&;\\s!\\-\\(\\d\\,\\\\.)]+)[\\s]+[\\w]+" \
                   "[\\s]+([\\d\\,]+)[\\s]+&euro;[\\s]*" \
